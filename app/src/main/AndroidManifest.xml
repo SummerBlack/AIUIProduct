@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.lamost.aiuiproductdemo"
+    android:versionCode="1"
+    android:versionName="1.0.002" >
+
+    <uses-sdk
+        android:minSdkVersion="16"
+        android:targetSdkVersion="20" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+
+    <application
+        android:name="com.iflytek.aiuiproduct.app.DemoApplication"
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        
+         <receiver android:enabled="true"
+             android:name=".LaunchReceiver">
+            <intent-filter > 
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </receiver>
+        
+        
+         <!-- AIUI配置provider -->
+        <provider
+            android:name="com.iflytek.aiuidemo.provider.AIUIConfigProvider"
+            android:authorities="com.iflytek.aiui.cfg.provider"
+            android:exported="true"
+            android:multiprocess="false">  
+        </provider>
+        
+        <receiver android:name="com.iflytek.aiuiproduct.receiver.NetworkStateReceiver" >
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
+        
+        <receiver android:name="com.iflytek.aiuiproduct.receiver.SensorReceiver" >
+            <intent-filter>
+                <action android:name="com.iflytek.aiuiproduct.receiver.action.SENSOR" />
+            </intent-filter>
+        </receiver>
+        
+         <service
+            android:name="com.iflytek.aiuiproduct.player.service.MusicService"
+            android:process=":MusicPlayer" >
+            <intent-filter android:priority="1000" >
+                <action android:name="com.iflytek.aiuiproduct.action.MusicService" />
+            </intent-filter>
+        </service>
+        
+        <service 
+            android:name="com.lamost.aiuiproductdemo.AIUIProductService">
+            <intent-filter android:priority="1000" >
+                <action android:name="com.lamost.aiuiproductdemo.action.AIUIProductService" />
+            </intent-filter>
+        </service>
+        
+         <service 
+            android:name="com.lamost.update.UpdateService"
+            android:process=":UpdateService">
+            
+            <intent-filter android:priority="1000" >
+                <action android:name="com.lamost.update.action.UpdateService" />
+            </intent-filter>
+                
+         </service>
+              
+    </application>
+
+</manifest>
