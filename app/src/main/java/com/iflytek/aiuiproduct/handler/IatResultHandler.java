@@ -19,6 +19,7 @@ import com.iflytek.aiuiproduct.constant.ProductConstant;
 import com.iflytek.aiuiproduct.player.PlayController;
 import com.lamost.connection.AIUICommunication;
 import com.lamost.connection.ActionListener;
+import com.lamost.update.UpdateService;
 import com.lamost.webservice.ElectricForVoice;
 import com.lamost.webservice.SceneDataInfo;
 /**
@@ -147,7 +148,6 @@ public class IatResultHandler {
 				if (mAIUICommunication == null) {
 					mAIUICommunication = AIUICommunication.getInstance();
 				}
-				
 				mAIUICommunication.searchHost(1);
 				if(mAIUICommunication.getmMasterCode() != null){
 					mPlayController.justTTS("", "成功搜索到家庭网关"+mAIUICommunication.getmMasterCode());
@@ -172,7 +172,14 @@ public class IatResultHandler {
 			} else if (iatResult.contains("大白大白")){
                 intent.putExtra("name","大白大白");
 			}
+
 			mContext.sendBroadcast(intent);
+		}
+
+		if (iatResult.contains("版本升级")) {
+			//启动更新apk服务
+			Intent serviceIntent = new Intent(mContext, UpdateService.class);
+			mContext.startService(serviceIntent);
 		}
 
 		// 单个电器的控制
